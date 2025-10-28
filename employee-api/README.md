@@ -43,7 +43,7 @@ REST API sederhana untuk mengelola data karyawan di perusahaan Juke.
 
 ```bash
 # 1. Clone project
-git clone https://github.com/juke/employee-api.git
+git clone https://github.com/ihsanalfarizi/employee-api.git
 cd employee-api
 
 # 2. Jalankan
@@ -237,5 +237,6 @@ docker-compose down
 
 ```
 ---
+
 
 **Selesai! 🚀**
