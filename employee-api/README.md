@@ -39,19 +39,25 @@ REST API sederhana untuk mengelola data karyawan di perusahaan Juke.
 
 ### Menggunakan Docker (RECOMMENDED):
 
-### Buka Docker Dekstop Terlebih dahulu
+### Buka Docker Desktop Terlebih dahulu
 
 ```bash
 # 1. Clone project
 git clone https://github.com/ihsanalfarizi/employee-api.git
 cd employee-api
 
+
 # 2. Jalankan
-docker-compose up --build
+./start-and-open.sh 
 
-# 3. Tunggu sampai muncul: "Started EmployeeApiApplication"
+##atau mau cara manual 
 
-# 4. Buka browser
+# 3. Jalankan
+docker-compose up --build 
+
+# 4. Tunggu sampai muncul: "Started EmployeeApiApplication"
+
+# 5. Buka browser
 http://localhost:8080/swagger-ui.html
 ```
 
@@ -207,27 +213,13 @@ curl -X DELETE http://localhost:8080/api/employees/1
 
 ---
 
-## 🔧 Troubleshooting
 
-### Port 8080 sudah digunakan
-```yaml
-# Edit application.yml
-server:
-  port: 8081
-```
 
 ### Docker error
 ```bash
 docker-compose down
 docker-compose up --build
 ```
-
-### Database connection error
-- Pastikan PostgreSQL berjalan
-- Check username/password di application.yml
-- Pastikan database employeedb sudah dibuat
-
----
 
 ## 🛑 Stop Aplikasi
 
@@ -237,6 +229,5 @@ docker-compose down
 
 ```
 ---
-
 
 **Selesai! 🚀**
