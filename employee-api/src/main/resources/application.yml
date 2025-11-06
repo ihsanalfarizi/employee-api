@@ -1,0 +1,72 @@
+spring:
+  application:
+    # Nama aplikasi (biasanya buat identitas kalau nanti ada banyak service)
+    name: employee-api
+  
+  datasource:
+    # Koneksi ke database PostgreSQL lokal (bukan Docker)
+    url: jdbc:postgresql://localhost:5432/employeedb
+    # Username database
+    username: employee
+    # Password database
+    password: employee123
+    driver-class-name: org.postgresql.Driver
+  
+  jpa:
+    hibernate:
+      # validate = hanya cek table sudah sesuai Entity, tidak buat / ubah table
+      # Cocok kalau struktur tabel sudah final
+      ddl-auto: validate
+    # Tampilkan query SQL yang dijalankan
+    show-sql: true
+    properties:
+      hibernate:
+        # Biar query rapih saat tampil
+        format_sql: true
+        # Dialek PostgreSQL (biar Hibernate tahu sintaks SQL yang cocok)
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  
+  # Dokumentasi Swagger UI (buat test API lewat browser)
+  springdoc:
+    api-docs:
+      # Endpoint JSON API Docs
+      path: /v3/api-docs
+    swagger-ui:
+      # URL untuk buka Swagger UI:
+      # http://localhost:8080/swagger-ui.html
+      path: /swagger-ui.html
+      enabled: true
+      # Mengurutkan tampilan API berdasarkan abjad
+      tags-sorter: alpha
+      operations-sorter: alpha
+
+server:
+  # Port aplikasi berjalan
+  port: 8080
+  error:
+    # Kalau ada error, tampilkan pesan error biar mudah debug
+    include-message: always
+    include-binding-errors: always
+
+logging:
+  level:
+    # Level log standar
+    root: INFO
+    # Log di dalam package project sendiri dibuat lebih detail
+    com.juke.employeeapi: DEBUG
+    # Log request HTTP
+    org.springframework.web: DEBUG
+    # Log query SQL penuh dari Hibernate
+    org.hibernate.SQL: DEBUG
+    # Log nilai parameter pada query (misal: id=1, name="Aldi")
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
+
+management:
+  endpoints:
+    web:
+      # Aktifkan endpoint monitoring
+      include: health,info,metrics
+  endpoint:
+    health:
+      # Tampilkan detail status aplikasi (misal koneksi DB sehat / tidak)
+      show-details: always
