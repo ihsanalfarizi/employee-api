@@ -42,29 +42,41 @@ REST API sederhana untuk mengelola data karyawan di perusahaan Juke.
 ### Buka Docker Desktop Terlebih dahulu
 
 ```bash
-# 1. Clone project
+# 1. Buka Terminal / Git Bash
+
+# 2. (Opsional) Jika sebelumnya sudah ada folder employee-api, hapus atau pindah dulu
+# Error yang biasanya muncul:
+#   fatal: destination path 'employee-api' already exists and is not an empty directory.
+#
+# Solusi:
+rm -rf employee-api
+# atau buat folder baru lalu masuk ke dalamnya (jika ingin clone di tempat spesifik)
+# mkdir projek-ku && cd projek-ku
+
+
+# 3. Clone project
 git clone https://github.com/ihsanalfarizi/employee-api.git
 cd employee-api
 
-
-# 2. Jalankan
-./start-and-open.sh 
-
-##atau mau cara manual 
+# 4. Jalankan otomatis
+./start-and-open.sh
 
 
-# 3. Jalankan
+# 👉 Jika ingin jalankan secara manual:
+
+# 5. Build & run container
 docker-compose up -d --build
 
-# 4. Tunggu sampai muncul: "Started EmployeeApiApplication"
+# 6. Tunggu sampai muncul log: "Started EmployeeApiApplication"
 
-#5. Untuk melihat isi tabel employees langsung dari PostgreSQL container:
+# 7. Cek isi tabel employees dari PostgreSQL container:
 docker exec -it employee-postgres \
   psql -U employee -d employeedb \
   -c "SELECT * FROM employees;"
 
-# 6. Buka browser
+# 8. Buka Swagger UI di browser
 http://localhost:8080/swagger-ui.html
+
 ```
 
 ## 📚 API Endpoints
