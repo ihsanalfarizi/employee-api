@@ -51,7 +51,7 @@ REST API sederhana untuk mengelola data karyawan di perusahaan Juke.
 # Solusi:
 rm -rf employee-api
 # atau buat folder baru lalu masuk ke dalamnya (jika ingin clone di tempat spesifik)
-# mkdir projek-ku && cd projek-ku
+
 
 
 # 3. Clone project
