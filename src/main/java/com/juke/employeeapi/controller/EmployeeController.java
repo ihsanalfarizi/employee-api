@@ -10,55 +10,94 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import java.time.LocalDateTime;  // ⭐ TAMBAH
+import java.util.HashMap;        // ⭐ TAMBAH
+import java.util.Map;            // ⭐ TAMBAH
 import java.util.List;
 
-// Ini controller untuk handle semua request yang berhubungan dengan data karyawan
-@RestController                           
-@RequestMapping("/api/employees")         // Base URL nya di /api/employees
-@RequiredArgsConstructor                  
+@RestController
+@RequestMapping("/api/employees")
+@RequiredArgsConstructor
 @Tag(name = "Juke Employee Management", description = "Employee Management REST API")
 public class EmployeeController {
 
-    private final EmployeeService employeeService;  // Service buat handle logic bisnis
+    private final EmployeeService employeeService;
 
-    // Endpoint buat ambil semua data karyawan
-    @GetMapping                           
+    // ✅ GET ALL - dengan pesan berhasil
+    @GetMapping
     @Operation(summary = "Menampilkan semua karyawan")
-    public ResponseEntity<List<EmployeeResponse>> getAllEmployees() {
-        return ResponseEntity.ok(employeeService.getAllEmployees());
+    public ResponseEntity<Map<String, Object>> getAllEmployees() {
+        List<EmployeeResponse> employees = employeeService.getAllEmployees();
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.OK.value());
+        response.put("message", "Successfully retrieved all employees");
+        response.put("data", employees);
+        response.put("timestamp", LocalDateTime.now());
+        
+        return ResponseEntity.ok(response);
     }
 
-    // Endpoint buat ambil data karyawan berdasarkan ID
-    @GetMapping("/{id}")                  
+    // ✅ GET BY ID - dengan pesan berhasil
+    @GetMapping("/{id}")
     @Operation(summary = "Menampilkan detail 1 karyawan")
-    public ResponseEntity<EmployeeResponse> getEmployeeById(@PathVariable Long id) {
-        // @PathVariable ngambil id dari URL
-        return ResponseEntity.ok(employeeService.getEmployeeById(id));
+    public ResponseEntity<Map<String, Object>> getEmployeeById(@PathVariable Long id) {
+        EmployeeResponse employee = employeeService.getEmployeeById(id);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.OK.value());
+        response.put("message", "Successfully retrieved employee");
+        response.put("data", employee);
+        response.put("timestamp", LocalDateTime.now());
+        
+        return ResponseEntity.ok(response);
     }
 
-    // Endpoint buat nambahin karyawan baru
-    @PostMapping                          
+    // ✅ CREATE - dengan pesan berhasil
+    @PostMapping
     @Operation(summary = "Menambahkan data karyawan baru")
-    public ResponseEntity<EmployeeResponse> createEmployee(@Valid @RequestBody EmployeeRequest request) {
-        // @RequestBody buat nerima data dari body request
-        // @Valid buat validasi input (misal email harus format email, nama gak boleh kosong, dll)
-        return new ResponseEntity<>(employeeService.createEmployee(request), HttpStatus.CREATED);
-    }
-
-    // Endpoint buat update data karyawan yang udah ada
-    @PutMapping("/{id}")                  
-    @Operation(summary = "Mengubah data karyawan")
-    public ResponseEntity<EmployeeResponse> updateEmployee(
-            @PathVariable Long id,        
+    public ResponseEntity<Map<String, Object>> createEmployee(
             @Valid @RequestBody EmployeeRequest request) {
-        return ResponseEntity.ok(employeeService.updateEmployee(id, request));
+        EmployeeResponse newEmployee = employeeService.createEmployee(request);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.CREATED.value());
+        response.put("message", "Employee created successfully");
+        response.put("data", newEmployee);
+        response.put("timestamp", LocalDateTime.now());
+        
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-    // Endpoint buat hapus data karyawan
-    @DeleteMapping("/{id}")               
+    // ✅ UPDATE - dengan pesan berhasil
+    @PutMapping("/{id}")
+    @Operation(summary = "Mengubah data karyawan")
+    public ResponseEntity<Map<String, Object>> updateEmployee(
+            @PathVariable Long id,
+            @Valid @RequestBody EmployeeRequest request) {
+        EmployeeResponse updatedEmployee = employeeService.updateEmployee(id, request);
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.OK.value());
+        response.put("message", "Employee updated successfully");
+        response.put("data", updatedEmployee);
+        response.put("timestamp", LocalDateTime.now());
+        
+        return ResponseEntity.ok(response);
+    }
+
+    // ✅ DELETE - dengan pesan berhasil
+    @DeleteMapping("/{id}")
     @Operation(summary = "Menghapus data karyawan")
-    public ResponseEntity<Void> deleteEmployee(@PathVariable Long id) {
+    public ResponseEntity<Map<String, Object>> deleteEmployee(@PathVariable Long id) {
         employeeService.deleteEmployee(id);
-        return ResponseEntity.noContent().build();  // 204 No Content
+        
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", HttpStatus.OK.value());
+        response.put("message", "Employee deleted successfully");
+        response.put("data", null);  // Gak ada data yang dikembalikan
+        response.put("timestamp", LocalDateTime.now());
+        
+        return ResponseEntity.ok(response);
     }
 }
